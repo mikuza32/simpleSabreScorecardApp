@@ -18,7 +18,7 @@ function App() {
         <Route path='/loginPage' element={<LoginPage/>}/>       {/*Each individual Route URL path is created using react-router-dom package in order
                                                                    to call each js file when acted upon. Each class created and their webpage will open since it is routed. */}
         <Route path='/sabr' element={<SABR/>}/>
-        <Route path='/signUpPage' element={<SignUpPage/>}/>
+        <Route path='/SignUpPage' element={<SignUpPage/>}/>
         <Route path='/tools' element={<Tools/>}/>
       </Routes>
     </Router>

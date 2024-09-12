@@ -1,3 +1,4 @@
+import '../design/NavigationBar.css';
 import React from "react";
 import {Link} from 'react-router-dom';  {/*react-router-dom package imported to have links on nav bar for CTA and other pages*/}
 
@@ -12,8 +13,8 @@ const NavigationBar = () => {
         <header>
             <nav className='navigationBar'>
                 <ul className='webLinks'>
-                    <li><Link to='/aboutMe'></Link></li>   {/*Links in nav bar to redirect to those URL pages*/}
-                    <li><Link to='/SABR'></Link></li>
+                    <li><Link to='/aboutMe'>About</Link></li>   {/*Links in nav bar to redirect to those URL pages*/}
+                    <li><Link to='/SABR'>SABR</Link></li>
                 </ul>
                 <Link to='/SignUpPage'>
                     <button className='callToAction'>GET STARTED</button>     {/*Button embedded in link logic for start of CTA button*/}

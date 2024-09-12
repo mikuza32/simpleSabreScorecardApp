@@ -1,0 +1,52 @@
+/* This is the css file that formats and designs the look of the Home Page, some parts are yet to be added */
+
+.homeBanner {
+    background-image: url("../images/landingBackground.jpg");
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    padding: 0 20px;
+    color: white;                                                 {/* Adds jpg background, adjusts size to full page, center aligned*/}
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+
+.headliner {
+    text-align: center;                                       {/* Aligns header and buttons ot be centered with a distance in the margin */}
+    margin-top: 20px;
+}
+
+.headliner h1 {
+    font-size: 48px;
+    color: white;                         {/* Sets the font size to a larger size, and makes the text pop by adding a shadow with black outline*/}
+    text-shadow: 2px 2px 8px #000;
+}
+
+.frontButtons {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;                          /* Buttons are spaced and centered in the headliner */
+    gap: 20px;
+}
+
+.frontButtons button {
+    background-color: darkolivegreen;
+    color: ghostwhite;
+    border: 2px solid #333;
+    padding: 15px 40px;
+    font-size: 24px;                                /* Button size, Custom color of button, curved edges, custom font, bolded font, font color, and transition timing into shading*/
+    font-family: 'Arial', sans-serif;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-radius: 9px;
+    transition: all 0.5s ease;
+}
+
+.frontButtons button:hover {
+    background-color: #333333;
+    color: #f0f0f0;                                /* Dynamic color shading of the front buttons to a grey when user hovers to click*/
+}
+
