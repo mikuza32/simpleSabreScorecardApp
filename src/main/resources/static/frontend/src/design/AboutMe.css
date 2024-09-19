@@ -1,0 +1,101 @@
+
+
+
+.aboutMeHeader {
+    background-image: url("../images/dudy noble.jpg");
+    background-size: cover;
+    background-position: center;                                 /* Basic formatting, sizing, and color along with background image implementation*/
+    color: white;
+    height: 100vh;
+}
+
+
+.aboutNavbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;                                    /* Spacing, sizing, and transparency of the AboutMe page navbar*/
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+
+.aboutNavbar ul {
+    list-style: none;
+    display: flex;                                 /* each individual link in the navbar and their display along with spacing*/
+    gap: 20px;
+}
+
+.aboutNavbar ul li a {
+    color: whitesmoke;
+    text-decoration: none;                        /* Webpage link design and font coloring*/
+    font-size: 20px;
+    font-weight: bold;
+}
+
+
+.aboutCTA {
+    background-color: #007BFF;
+    color: whitesmoke;
+    padding: 10px 20px;
+    border: none;                                /* Button coloring, curvature, font size, and sizing*/
+    border-radius: 8px;
+    font-size: 20px;
+}
+
+.aboutCTA:hover {
+    background-color: #0056B3;                  /* Dynamic feature to change color when user hovers the button */
+}
+
+.aboutContent {
+    text-align: center;
+    padding-top: 100px;                       /* alignment and padding of the 3 about me content sections*/
+}
+
+.aboutContent h1 {
+    font-size: 54px;
+    margin-bottom: 54px;                                 /* Font size, spacing, formatting, and shadow for professonalism for title */
+    text-transform: uppercase;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.aboutSlider {
+    margin: 0 auto;
+    width: 60%;
+    background-color: rgba(0, 0, 0, 0.6);               /* Formatting, sizing, and curvature of image carousel */
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.aboutSlider img {
+    width: 100%;
+    border-radius: 10px;                          /* Images sizing and curvature */
+}
+
+.aboutSlider p {
+    font-size: 18px;
+    margin-top: 10px;
+    text-transform: uppercase;          /* Image carousel label formatting */
+}
+
+
+.aboutMeInfo {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 40px;
+}
+
+.infoSection {
+    width: 25%;
+    background-color: rgba(0, 0, 0, 0.6);                   /* Info section formatting, spacing, coloring, curvature, and font features*/
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.infoSection h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.infoSection p {
+    font-size: 16px;
+}
