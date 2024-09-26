@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {useNavigate} from "react-router-dom";
-
+import '../design/LoginPage.css'
 
 const LoginPage = () => {
     const [username, setUsername] = useState('')         // username and password objects created
@@ -21,8 +21,9 @@ const LoginPage = () => {
     }
     return (
         <div className='loginBox'>
-            <h2>Welcome Back!</h2>                             {/*Welcoming header for when the user loads the login webpage*/}
-            <form onSubmit={handleSubmition} className='loginForm'>           {/* handleSubmition function called to run logic throughout entire form */}
+            <h1>Welcome Back!</h1>                             {/*Welcoming header for when the user loads the login webpage*/}
+            <form onSubmit={handleSubmition} className='loginForm'>{/* handleSubmition function called to run logic throughout entire form */}
+                <h2>LOGIN HERE!</h2>
                 <div>
                     <label>Username:</label>
                     <input

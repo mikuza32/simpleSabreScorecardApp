@@ -7,6 +7,8 @@ import LoginPage from './webpages/LoginPage'
 import SABR from './webpages/SABR'
 import SignUpPage from './webpages/SignUpPage'
 import Tools from './webpages/Tools'
+import SignUpNavigationBar from "./Structure/SignUpNavigationBar";
+import LoginPageNavigationBar from "./Structure/LoginPageNavigationBar";
 
 function App() {
     const location = useLocation();
@@ -14,6 +16,8 @@ function App() {
   return (
       <div>
           {location.pathname === '/' && <NavigationBar/>}
+          {location.pathname === '/SignUpPage' && <SignUpNavigationBar/>}
+          {location.pathname === '/LoginPage' && <LoginPageNavigationBar/>}
           <Routes>
               <Route path='/' element={<HomePage/>}/>
               <Route path='/aboutMe' element={<AboutMe/>}/>

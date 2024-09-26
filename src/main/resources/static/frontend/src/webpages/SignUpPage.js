@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import {useNavigate} from "react-router-dom";
+import '../design/SignUpPage.css'
 
 const SignUpPage = () => {
     const [username, setUsername] = useState('')
@@ -23,8 +24,10 @@ const SignUpPage = () => {
 
     return (
         <div className='signUpBox'>
-            <h2>SIGN UP!</h2>                   {/* Sign up eye catching header when user opens the sign up web page*/}
+            <h1>CREATE YOUR ACCOUNT</h1> {/* Sign up eye catching header when user opens the sign up web page*/}
+            <h2> Simple Sabre Scorecard</h2>
             <form onSubmit={handleSubmition} className="signUpForm">      {/* handleSubmition function is called to run to verify user input, handles the entire form below */}
+                <h2> SIGN-UP</h2>
                 <div>
                     <label>Username:</label>
                     <input
