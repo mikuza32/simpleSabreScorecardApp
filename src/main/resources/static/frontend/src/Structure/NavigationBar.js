@@ -13,7 +13,7 @@ const NavigationBar = () => {
         <header>
             <nav className='navigationBar'>
                 <ul className='webLinks'>
-                    <li><Link to='/aboutMe'>About</Link></li>   {/*Links in nav bar to redirect to those URL pages*/}
+                    <li><Link to='/aboutMe'>ABOUT</Link></li>   {/*Links in nav bar to redirect to those URL pages*/}
                     <li><Link to='/SABR'>SABR</Link></li>
                 </ul>
                 <Link to='/SignUpPage'>

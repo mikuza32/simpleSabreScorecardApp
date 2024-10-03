@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import '../design/HomePage.css';
 {/*This jsx code is to display the home/landing page to users. This is a foundation before extensive sections are developed and formatted on this and other pages. 9/4/24*/}
@@ -44,6 +44,30 @@ const HomePage = () => {
         navigation('/SignUpPage');
     };
 
+    const homeSlides = [
+        process.env.PUBLIC_URL + "ohtani.jpg",
+        process.env.PUBLIC_URL + "1_8H2qjYmDnNrRxtu_7eLfkA.jpg",          //embeds images from the public directory so that they can be displayed
+        process.env.PUBLIC_URL + "220929124151-aaron-judge-0926.jpg",
+        process.env.PUBLIC_URL + "samplePhoto.jpg"
+    ];
+
+    const [slideIndex, setSlideIndex] = useState(0);          // sets the initialized state to the first image before being manipulated
+
+    const nextSlide = () => {
+        setSlideIndex((prevIndex) => (prevIndex + 1 ) % homeSlides.length);  //increment one everytime the user clicks the next button
+    };
+
+    const prevSlide = () => {
+        setSlideIndex((prevIndex) =>
+            prevIndex === 0 ? homeSlides.length - 1 : prevIndex - 1           // increment back one everytime the user clicks the prev button
+        );
+    };
+
+    useEffect(() => {
+        const intervalID = setInterval(nextSlide, 10000);
+        return () => clearInterval(intervalID);                            // intervals of 10 seconds to change the photo to the next image in line
+    }, []);
+
     return (
         <div
             className='homeBanner'>   {/*Home banner code which includes headliner, buttons, and eventually links, image carousel, tut video etc*/}
@@ -58,12 +82,20 @@ const HomePage = () => {
             </div>
             <div className="homeContentPictures">
                 <div className="homePicSlide">
-                    <p>SABR</p>
-                    <img src="../images/samplePhoto.jpg" alt="Photos"/>       {/*This div is for the middle section in which will display the image carousel as well as tut video*/}
+                    {homeSlides.map((slide, index) => (
+                        <img
+                            key={index}
+                            className={`homeSlides ${index === slideIndex ? "displaySlides" : ""}`}
+                            src={slide}
+                            alt={`slide ${index}`}
+                            style={{display: index === slideIndex ? "block" : "none"}}/>
+                    ))}
+                    <button className="homePrev" onClick={prevSlide}>&#10094;</button>
+                    <button className="homeNext" onClick={nextSlide}>&#10095;</button>                                {/*This div is for the middle section in which will display the image carousel as well as tut video*/}
                 </div>
                 <div className="videoTutorial">
                     <p>Tutorial: </p>
-                    <img src="../images/fake%20video.jpg" alt="Video"/>
+                    <img src="fake%20video.jpg" alt="Video"/>
                 </div>
             </div>
             <div className="userContent">
@@ -80,12 +112,14 @@ const HomePage = () => {
                             <p>Fielding Percentage, Adjusted Pitching Runs, Earned Run Average, Earned Run Average Plus,
                                 Walk and Hits per Innings Pitched, Opposing Team Batting Average</p>
                         </div>
-                        <p>Disclaimer: (Will be scripted later on)</p>                                      {/* Disclaimer to users that this is a simple sabermetrics calculator, not state of the art*/}
+                        <p>Disclaimer: These metrics will not guarantee improvements! Data cannot provide change, only reasoning!</p>                                      {/* Disclaimer to users that this is a simple sabermetrics calculator, not state of the art*/}
                     </div>
                 </div>
                 <div className="userBenefits">
                     <h2>How will this Benefit YOU?</h2>
-                    <p>Description (Will be scripted later on)</p>
+                    <p>By inputting personal counting stats one can analyze their performance and generate a summary based on what they see themselves.
+                    For example, if one has a low on base percentage, they may have to change their approach in their at bats. This can help improve performance and help
+                    their team win!</p>
                 </div>
                 <div className="tryMe">
                     <h2>TRY ME: </h2>

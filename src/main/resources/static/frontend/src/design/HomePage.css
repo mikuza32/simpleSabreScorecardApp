@@ -4,13 +4,18 @@
     background-image: url("../images/landingBackground.jpg");
     background-size: cover;
     background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     height: 100vh;
+    width: 100vw;
     padding: 0 20px;
     color: white;                                                 {/* Adds jpg background, adjusts size to full page, center aligned*/}
     text-align: center;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    margin: 0;
+    overflow-x: hidden;
 }
 
 
@@ -60,7 +65,7 @@
 }
 
 .homePicSlide, .videoTutorial {
-    width: 100px;
+    width: 300px;
     background-color: rgba(0, 0, 0, 0.8);                    /* Sets the size of their respective sections while making the section transparent for photos and video to pop, curvature as well*/
     padding: 20px;
     border-radius: 10px;
@@ -113,4 +118,24 @@
 
 .tryMe button:hover {
     background-color: #45A000;                          /* Hover pseudo class for the calculate button to change color when user is hovered*/
+}
+
+.homePrev, .homeNext {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);                      /* Transparency around buttons for slider, positioning, font color, and moves buttons upwards */
+    background-color: rgba(0, 0, 0, 0.5);
+    color: whitesmoke;
+    border: none;
+    padding: 15px;
+}
+
+.homePrev {
+    left: 18.5%;
+    border-radius: 5px;                       /* Positioning of button and curvature */
+}
+
+.homeNext {
+    right: 60.25%;
+    border-radius: 5px;                    /* Positioning of button and curvature */
 }

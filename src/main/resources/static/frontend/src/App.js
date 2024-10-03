@@ -9,6 +9,8 @@ import SignUpPage from './webpages/SignUpPage'
 import Tools from './webpages/Tools'
 import SignUpNavigationBar from "./Structure/SignUpNavigationBar";
 import LoginPageNavigationBar from "./Structure/LoginPageNavigationBar";
+import ToolsNavigationBar from "./Structure/ToolsNavigationBar";
+import SABRNavigationBar from "./Structure/SABRNavigationBar";
 
 function App() {
     const location = useLocation();
@@ -18,6 +20,8 @@ function App() {
           {location.pathname === '/' && <NavigationBar/>}
           {location.pathname === '/SignUpPage' && <SignUpNavigationBar/>}
           {location.pathname === '/LoginPage' && <LoginPageNavigationBar/>}
+          {location.pathname === '/Tools' && <ToolsNavigationBar/>}
+          {location.pathname === '/SABR' && <SABRNavigationBar/>}
           <Routes>
               <Route path='/' element={<HomePage/>}/>
               <Route path='/aboutMe' element={<AboutMe/>}/>

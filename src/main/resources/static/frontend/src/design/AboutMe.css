@@ -48,27 +48,39 @@
 
 .aboutContent {
     text-align: center;
-    padding-top: 100px;                       /* alignment and padding of the 3 about me content sections*/
+    padding-top: 25px;                       /* alignment and padding of the 3 about me content sections*/
 }
 
 .aboutContent h1 {
-    font-size: 54px;
-    margin-bottom: 54px;                                 /* Font size, spacing, formatting, and shadow for professonalism for title */
+    font-size: 96px;
+    margin-bottom: 100px;                                 /* Font size, spacing, formatting, and shadow for professonalism for title */
     text-transform: uppercase;
     text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
 }
 
 .aboutSlider {
-    margin: 0 auto;
-    width: 60%;
-    background-color: rgba(0, 0, 0, 0.6);               /* Formatting, sizing, and curvature of image carousel */
-    padding: 10px;
-    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;                                  /* Slider area size and formatting */
+    width: 100%;
+    margin: 20px 0;
+}
+
+.aboutSlides {
+    width: 300px;
+    height: auto;
+    border-radius: 12px;                               /* Slides size, curvature, and organization */
+    object-fit: cover;
 }
 
 .aboutSlider img {
-    width: 100%;
-    border-radius: 10px;                          /* Images sizing and curvature */
+    max-width: 100%;
+    max-height: 100%;                             /* Keeps images provided true to their shape for full photo */
+}
+
+.displaySlides {
+    display: block;
 }
 
 .aboutSlider p {
@@ -77,10 +89,28 @@
     text-transform: uppercase;          /* Image carousel label formatting */
 }
 
+.prev, .next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);          /* positioning, location, color of font, size and transparency of the background*/
+    color: whitesmoke;
+    border: none;
+    padding: 15px;
+}
+
+.prev {
+    left: 40.25%;                                  /* location of prev button */
+}
+
+.next {
+    right: 40.25%;                                /* location of next button */
+}
+
 
 .aboutMeInfo {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-around;                 /* Section sizing, formatting, and organization */
     margin-top: 40px;
 }
 
@@ -93,9 +123,9 @@
 
 .infoSection h2 {
     font-size: 24px;
-    margin-bottom: 10px;
+    margin-bottom: 10px;         /* Header formatting for the about me information boxes, sizing, and location within the box*/
 }
 
 .infoSection p {
-    font-size: 16px;
+    font-size: 20px;              /* Font size of the paragraphs in each box */
 }
