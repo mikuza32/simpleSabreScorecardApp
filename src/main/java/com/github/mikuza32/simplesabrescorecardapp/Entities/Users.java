@@ -22,6 +22,9 @@ public class Users {
     @OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
     private List<offensiveSabermetrics> offensiveSabermetrics;
 
+    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
+    private List<defensiveSabermetrics> defensiveSabermetrics;
+
     public Users() {
         // called in the offensiveSabermetric, defensive, and counting statistic classes
     }
@@ -56,5 +59,13 @@ public class Users {
 
     public void setOffensiveSabermetrics(List<com.github.mikuza32.simplesabrescorecardapp.Entities.offensiveSabermetrics> offensiveSabermetrics) {
         this.offensiveSabermetrics = offensiveSabermetrics;
+    }
+
+    public List<com.github.mikuza32.simplesabrescorecardapp.Entities.defensiveSabermetrics> getDefensiveSabermetrics() {                  //initializes the defensive sabermetric list for each users unique calculations
+        return defensiveSabermetrics;
+    }
+
+    public void setDefensiveSabermetrics(List<com.github.mikuza32.simplesabrescorecardapp.Entities.defensiveSabermetrics> defensiveSabermetrics) {
+        this.defensiveSabermetrics = defensiveSabermetrics;
     }
 }

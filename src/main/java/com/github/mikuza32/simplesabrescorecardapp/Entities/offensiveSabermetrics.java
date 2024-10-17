@@ -29,6 +29,7 @@ public class offensiveSabermetrics {
     @Column(name = "strikeout_percentage")
     private double strikeoutPercentage;
 
+    @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private Users users;                                           // connects users to their unique sabermetrics as many users have their own calculations
 
@@ -44,13 +45,13 @@ public class offensiveSabermetrics {
         this.id = id;
     }
 
-    public double getBattingAverage {
+    public double getBattingAverage() {
         return battingAverage;
     }
 
 
 
-    public void setBattingAverage {
+    public void setBattingAverage(double battingAverage) {
         this.battingAverage = battingAverage;
     }
 
