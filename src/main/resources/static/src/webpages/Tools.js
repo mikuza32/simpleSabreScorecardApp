@@ -3,9 +3,7 @@ import '../design/Tools.css'
 import axios from 'axios';
 
 
-function handleDefensiveSubmit() {
 
-}
 
 const Tools = () => {
     const[toolsData, setToolsData] = useState({       //
@@ -23,7 +21,7 @@ const Tools = () => {
         hitsAllowed: '',
         defSacrifices: '',
         defSacrificeFlies: '',
-        errors: '',                                 //Every single variable pertaining to offensive/defensive variables and metrics are initialized
+        errors: '',                                 //Every single property pertaining to offensive/defensive variables and metrics are initialized
         leagueAverageERA: '',
         putouts: '',
         assists: '',
@@ -47,16 +45,16 @@ const Tools = () => {
 
     });
 
-    const handleInput = (Event) => {
-        const { name, value } = Event.target;
+    const handleInput = (event) => {
+        const { name, value } = event.target;
         setToolsData({                       // In the event a user enters a numerical value for a stat, the value entered is attached to the respective name from toolsData
             ...toolsData,
-            [name]: value
+            [name]: value,
         });
     };
 
-    const handleOffensiveSubmit = async (Event) => {
-        Event.preventDefault();                  // Exception handling
+    const handleOffensiveSubmit = async (event) => {
+        event.preventDefault();                  // Exception handling
 
 
         const {hits, atBats, walks, hitByPitch, totalBases, plateAppearances, sacrificeFlies, strikeouts} = toolsData;
@@ -64,44 +62,54 @@ const Tools = () => {
               // try catch to run through all API calls to proceed with backend/frontend communications
               // each offensive and defensive metric calculated sends a POST request using axios, seen below
         try {
+
+            const parsedHits = parseInt(hits) || 0;
+            const parsedAtBats = parseInt(atBats) || 0;
+            const parsedWalks = parseInt(walks) || 0;
+            const parsedHitByPitch = parseInt(hitByPitch) || 0;
+            const parsedSacrificeFlies = parseInt(sacrificeFlies) || 0;    // Sets the properties in the toolsData object to null until user entry, uses parseInt to turn the entry for the property into an int
+            const parsedTotalBases = parseInt(totalBases) || 0;
+            const parsedPlateAppearances = parseInt(plateAppearances) || 0;
+            const parsedStrikeouts = parseInt(strikeouts) || 0;
+
             const battingAverageOutput = await axios.post('http://localhost:8080/api/offensiveSabermetrics/battingAverage', {
-                hits: parseInt(hits),
-                atBats: parseInt(atBats)
+                hits: parsedHits,
+                atBats: parsedAtBats,
             });
-            const battingAverage = battingAverageOutput.data;
+            const battingAverage = parseFloat(battingAverageOutput.data).toFixed(3);
 
             const onBasePercentageOutput = await axios.post('http://localhost:8080/api/offensiveSabermetrics/onBasePercentage', {
-                hits: parseInt(hits),
-                atBats: parseInt(atBats),
-                walks: parseInt(walks),                                  // turns into integers
-                hitByPitch: parseInt(hitByPitch),
-                sacrificeFlies: parseInt(sacrificeFlies)
+                hits: parsedHits,
+                atBats: parsedAtBats,
+                walks: parsedWalks,                                  // turns into integers, calls the respective functions for each parsed property
+                hitByPitch: parsedHitByPitch,
+                sacrificeFlies: parsedSacrificeFlies,
             });
-            const onBasePercentage = onBasePercentageOutput.data;
+            const onBasePercentage = parseFloat(onBasePercentageOutput.data).toFixed(3);
 
             const walkPercentageOutput = await axios.post('http://localhost:8080/api/offensiveSabermetrics/walkPercentage', {
-                walks: parseInt(walks),
-                plateAppearances: parseInt(plateAppearances)
+                walks: parsedWalks,
+                plateAppearances: parsedPlateAppearances,
             });
-            const walkPercentage = walkPercentageOutput.data;
+            const walkPercentage = parseFloat(walkPercentageOutput.data).toFixed(3);
 
             const strikeoutPercentageOutput = await axios.post('http://localhost:8080/api/offensiveSabermetrics/strikeoutPercentage', {
-                strikeouts: parseInt(strikeouts),
-                plateAppearances: parseInt(plateAppearances)
+                strikeouts: parsedStrikeouts,
+                plateAppearances: parsedPlateAppearances,
             });
-            const strikeoutPercentage = strikeoutPercentageOutput.data;
+            const strikeoutPercentage = parseFloat(strikeoutPercentageOutput.data).toFixed(3);
 
             const sluggingPercentageOutput = await axios.post('http://localhost:8080/api/offensiveSabermetrics/sluggingPercentage', {
-                totalBases: parseInt(totalBases),
-                atBats: parseInt(atBats)
+                totalBases: parsedTotalBases,
+                atBats: parsedAtBats,
             });
-            const sluggingPercentage = sluggingPercentageOutput.data;
+            const sluggingPercentage = parseFloat(sluggingPercentageOutput.data).toFixed(3);
 
             const onBasePlusSluggingOutput = await axios.post('http://localhost:8080/api/offensiveSabermetrics/onBasePlusSlugging', {
                 onBasePercentage: parseFloat(onBasePercentage),                // parseFloat due to calculation using other sabermetrics that are being calculated
                 sluggingPercentage: parseFloat(sluggingPercentage)
             });
-            const onBasePlusSlugging = onBasePlusSluggingOutput.data;
+            const onBasePlusSlugging = parseFloat(onBasePlusSluggingOutput.data).toFixed(3);
 
             setToolsData({
                 ...toolsData,
@@ -110,17 +118,18 @@ const Tools = () => {
                 walkPercentage: walkPercentage ?? 'N/A',                          //updates all of the offensive metric fields, ?? operator checks if each field is null or undefined
                 strikeoutPercentage: strikeoutPercentage ?? 'N/A',
                 sluggingPercentage: sluggingPercentage ?? 'N/A',
-                onBasePlusSlugging: onBasePlusSlugging ?? 'N/A'
+                onBasePlusSlugging: onBasePlusSlugging ?? 'N/A',
             });
-            alert("Your Offensive Metrics have been calculated successfully!")
-        } catch (e) {
-            console.error("An error has occurred...")
-            alert("Cannot calculate Offensive Metrics, an error has occurred...")
+            alert("Your Offensive Metrics have been calculated successfully!");
+        } catch (error) {
+            console.error("An error has occurred...", error.response || error);
+            alert("Cannot calculate Offensive Metrics, an error has occurred...");
         }
     };
 
 
-    handleDefensiveSubmit = async (Event) => {
+     // Same as the handleOffensiveSubmit function, just doesn't initialize the parseInt for each property in its own function
+    const handleDefensiveSubmit = async (Event) => {
         Event.preventDefault();
         const { putouts, errors, assists, earnedRunsAllowed, hitsAllowed, walksAllowed, leagueAverageERA, defSacrifices, defSacrificeFlies, catchersInterference, inningsPitched, battersFaced } = toolsData;
         try {
@@ -174,12 +183,12 @@ const Tools = () => {
             console.error("An error has occured...")                                     // catch exception for if an error occurs
             alert("Defensive Metrics cannot be calculated...")
         }
-    }
+    };
 
     const deleteSubmit = (fieldName) => {
         setToolsData({
             ...toolsData,                           // Deletes the user entry which is called as a button below in HTML section, this deletes the entry and
-            [fieldName]: ''
+            [fieldName]: '',
         });
     };
 
@@ -237,7 +246,7 @@ const Tools = () => {
                             required
                         />
                         <button type="button" onClick={() => deleteSubmit('walks', 'hitByPitch', 'sacrificeFlies')}>Delete</button>
-                        <div className='calculations'>On Base Percentage: {toolsData.battingAverage || 'N/A'}</div>
+                        <div className='calculations'>On Base Percentage: {toolsData.onBasePercentage || 'N/A'}</div>
 
                         <label>Total Bases:</label>
                         <input
@@ -381,7 +390,7 @@ const Tools = () => {
                         <label>Sacrifice Hits:</label>
                         <input
                             type="number"
-                            name="sacrificeHits"
+                            name="defSacrifices"
                             value={toolsData.defSacrifices}
                             onChange={handleInput}
                             required
@@ -389,7 +398,7 @@ const Tools = () => {
                         <label>Sacrifice Flies:</label>
                         <input
                             type="number"
-                            name="sacrificeFlies"
+                            name="defSacrificeFlies"
                             value={toolsData.defSacrificeFlies}
                             onChange={handleInput}
                             required

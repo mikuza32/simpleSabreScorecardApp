@@ -1,47 +1,63 @@
 package com.github.mikuza32.simplesabrescorecardapp.Controller;
-
-
 import org.springframework.web.bind.annotation.*;
 import com.github.mikuza32.simplesabrescorecardapp.Service.defensiveSabermetricService;
-@RestController                                    // Makes this class a REST controller that will handle web requests that are called from the frontend
-@RequestMapping("/api/defensiveSabermetrics")    // this is the request URl for the defensive sabermetric APIs
-@CrossOrigin(origins = "*")                         //adjusts CORS settings since the react app and spring boot are on separate ports (still not running as of 10/17 needs to be fixed)
+import java.util.Map;
+
+@RestController // Makes this class a REST controller that will handle web requests that are called from the frontend
+@RequestMapping("/api/defensiveSabermetrics") // This is the request URL for the defensive sabermetric APIs
 public class defensiveSabermetricController {
 
     private final defensiveSabermetricService defensiveSabermetricService;
 
     public defensiveSabermetricController(defensiveSabermetricService defensiveSabermetricService) {
-        this.defensiveSabermetricService = defensiveSabermetricService;
+        this.defensiveSabermetricService = defensiveSabermetricService; // Incorporates the defensive sabermetric service methods so that the API can provide the calculations for the respective formulas for each metric
     }
-                                                                                                          // incorporates the offensive sabermetric service methods so that the
-                                                                                                          // API can provide the calculations for the respective formulas for each
+
+    // Refactored the API POST requests by leaving the map URLs the same, but used a different annotation. @RequestBody is able to take the JSON Object
+    // and manipulate the key and integer, set the default value to 0 if there is no entry (not possible) and if the user does not input an int and sets it to null
+    // Then is able to call the service method responsible and manipulate the respective counting statistics to return back to the UI for the user
 
     @PostMapping("/fieldingPercentage")
-    public double pullFieldingPercentage(@RequestParam int assists, @RequestParam int putouts, @RequestParam int errors) {
+    public double pullFieldingPercentage(@RequestBody Map<String, Integer> requestBody) {
+        int assists = requestBody.getOrDefault("assists", 0);
+        int putouts = requestBody.getOrDefault("putouts", 0);
+        int errors = requestBody.getOrDefault("errors", 0);
         return defensiveSabermetricService.calcFieldingPercentage(assists, putouts, errors);
     }
 
     @PostMapping("/earnedRunAverage")
-    public double pullEarnedRunAverage(@RequestParam int earnedRunsAllowed, @RequestParam int inningsPitched) {
+    public double pullEarnedRunAverage(@RequestBody Map<String, Integer> requestBody) {
+        int earnedRunsAllowed = requestBody.getOrDefault("earnedRunsAllowed", 0);
+        int inningsPitched = requestBody.getOrDefault("inningsPitched", 0);
         return defensiveSabermetricService.calcEarnedRunAverage(earnedRunsAllowed, inningsPitched);
     }
-                                                                                                                //post endpoint for calculating all offensive sabermetrics with the parameters
-                                                                                                               // needed to complete the calculation, then returns the actual
-                                                                                                               //calculation back to the frontend to be displayed
 
     @PostMapping("/earnedRunAveragePlus")
-    public double pullEarnedRunAveragePlus(@RequestParam int leagueAverageERA, @RequestParam double earnedRunAverage) {
+    public double pullEarnedRunAveragePlus(@RequestBody Map<String, Double> requestBody) {
+        int leagueAverageERA = requestBody.getOrDefault("leagueAverageERA", (double) 0).intValue();
+        double earnedRunAverage = requestBody.getOrDefault("earnedRunAverage", 0.0);
         return defensiveSabermetricService.calcEarnedRunAveragePlus(leagueAverageERA, earnedRunAverage);
     }
 
     @PostMapping("/walkHitsInningsPitched")
-    public double pullWalkHitsInningsPitched(@RequestParam int hitsAllowed, int walksAllowed, int inningsPitched) {
+    public double pullWalkHitsInningsPitched(@RequestBody Map<String, Integer> requestBody) {
+        int hitsAllowed = requestBody.getOrDefault("hitsAllowed", 0);
+        int walksAllowed = requestBody.getOrDefault("walksAllowed", 0);
+        int inningsPitched = requestBody.getOrDefault("inningsPitched", 0);
         return defensiveSabermetricService.calcWalkHitsInningsPitched(hitsAllowed, walksAllowed, inningsPitched);
     }
 
     @PostMapping("/opposingBattingAverage")
-    public double pullOpposingBattingAverage(@RequestParam int hitsAllowed, @RequestParam int battersFaced, @RequestParam int walksAllowed, @RequestParam int hitBatters, @RequestParam int defSacrifices, @RequestParam int defSacrificeFlies, @RequestParam int catchersInterference) {
-        return defensiveSabermetricService.calcOpposingBattingAverage(hitsAllowed, battersFaced, walksAllowed, hitBatters, defSacrifices, defSacrificeFlies, catchersInterference);
+    public double pullOpposingBattingAverage(@RequestBody Map<String, Integer> requestBody) {
+        int hitsAllowed = requestBody.getOrDefault("hitsAllowed", 0);
+        int battersFaced = requestBody.getOrDefault("battersFaced", 0);
+        int walksAllowed = requestBody.getOrDefault("walksAllowed", 0);
+        int hitBatters = requestBody.getOrDefault("hitBatters", 0);
+        int defSacrifices = requestBody.getOrDefault("defSacrifices", 0);
+        int defSacrificeFlies = requestBody.getOrDefault("defSacrificeFlies", 0);
+        int catchersInterference = requestBody.getOrDefault("catchersInterference", 0);
+        return defensiveSabermetricService.calcOpposingBattingAverage(hitsAllowed, battersFaced, walksAllowed, hitBatters, defSacrifices, defSacrificeFlies, catchersInterference
+        );
     }
-
 }
+
