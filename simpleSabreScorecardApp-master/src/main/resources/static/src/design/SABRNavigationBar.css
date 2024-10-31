@@ -1,0 +1,40 @@
+
+
+
+.sabrNav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;         /* Sizing, formatting, background color, and alignment*/
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 20px;
+}
+
+.sabrWebLinks {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;                     /*web page links formatting and spacing */
+    gap: 20px;
+    display: flex;
+}
+
+.sabrWebLinks li a {
+    color: white;
+    font-size: 20px;
+    font-weight: bolder;              /* webpage links formatting and design */
+    text-decoration: none;
+}
+
+.sabrCTAButton {
+    background-color: darkolivegreen;
+    color: white;
+    font-size: 20px;
+    padding: 8px 16px;                     /* CTA button color, font color, curvature, boldness, and font size */
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.sabrCTAButton:hover {
+    background-color: grey;
+    animation-delay: .05s;               /* Dynamic feature when the user hovers over the cta button */
+}

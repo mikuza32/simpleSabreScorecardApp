@@ -1,0 +1,91 @@
+
+
+
+body {
+    margin: 0;
+    padding: 0;                                     /* Overall formatting of webpage */
+    font-family: 'Arial', sans-serif;
+    background-color: whitesmoke;
+}
+
+.signUpBox {
+    background-image: url("../images/sign up page backdrop.jpg");
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh;
+    display: flex;                                            /* Embeds background image, formatting of image, and overall formatting of the signUpBox*/
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: #1E3C72;
+}
+
+.signUpBox h1 {
+    font-size: 95px;
+    margin-bottom: 35px;                                  /* First header customization */
+    font-weight: bolder;
+
+}
+
+.signUpBox h2 {
+    font-size: 45px;
+    margin-top: 0px;                                     /* Second header customization */
+}
+
+.signUpForm h2 {
+    font-size: 85px;
+    margin-top: 0px;
+    margin-bottom: 75px;
+    font-weight: bolder;
+    color: #1E3C72;                                          /* Form header instructing the user to sign up customization and font formatting */
+    text-shadow: whitesmoke;
+    background-color: whitesmoke;
+    border-radius: 10px;
+}
+
+.signUpForm {
+    background-color: rgba(255, 255, 255, 0.4);
+    padding: 100px;
+    border-radius: 15px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);                     /* Form formatting and styling */
+    width: 500px;
+    text-align: center;
+}
+
+
+.signUpForm label {
+    display: inline-block;
+    font-size: 25px;
+    margin-bottom: 12px;
+    text-align: left;
+    color: whitesmoke;                                                   /* Form label formatting and styling */
+    background-color: #1E3C72;
+    width: 125px;
+    border-radius: 5px;
+}
+
+.signUpForm input {
+    width: 58%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid white;
+    border-radius: 7px;                               /* User input box customization and formatting */
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.signUpButton {
+    padding: 15px;
+    font-size: 65px;
+    background-color: #1E3C72;
+    color: whitesmoke;                           /* User sign up button formatting and customization */
+    border: none;
+    border-radius: 9px;
+    width: 100%;
+    text-transform: uppercase;
+}
+
+.signUpButton:hover {
+    background-color: #153559;                   /* Dynamic feature for when user hovers over the button */
+}
+

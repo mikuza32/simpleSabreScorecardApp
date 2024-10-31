@@ -1,0 +1,131 @@
+
+
+
+.aboutMeHeader {
+    background-image: url("../images/dudy noble.jpg");
+    background-size: cover;
+    background-position: center;                                 /* Basic formatting, sizing, and color along with background image implementation*/
+    color: white;
+    height: 100vh;
+}
+
+
+.aboutNavbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;                                    /* Spacing, sizing, and transparency of the AboutMe page navbar*/
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+
+.aboutNavbar ul {
+    list-style: none;
+    display: flex;                                 /* each individual link in the navbar and their display along with spacing*/
+    gap: 20px;
+}
+
+.aboutNavbar ul li a {
+    color: whitesmoke;
+    text-decoration: none;                        /* Webpage link design and font coloring*/
+    font-size: 20px;
+    font-weight: bold;
+}
+
+
+.aboutCTA {
+    background-color: #007BFF;
+    color: whitesmoke;
+    padding: 10px 20px;
+    border: none;                                /* Button coloring, curvature, font size, and sizing*/
+    border-radius: 8px;
+    font-size: 20px;
+}
+
+.aboutCTA:hover {
+    background-color: #0056B3;                  /* Dynamic feature to change color when user hovers the button */
+}
+
+.aboutContent {
+    text-align: center;
+    padding-top: 25px;                       /* alignment and padding of the 3 about me content sections*/
+}
+
+.aboutContent h1 {
+    font-size: 96px;
+    margin-bottom: 100px;                                 /* Font size, spacing, formatting, and shadow for professonalism for title */
+    text-transform: uppercase;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.aboutSlider {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;                                  /* Slider area size and formatting */
+    width: 100%;
+    margin: 20px 0;
+}
+
+.aboutSlides {
+    width: 300px;
+    height: auto;
+    border-radius: 12px;                               /* Slides size, curvature, and organization */
+    object-fit: cover;
+}
+
+.aboutSlider img {
+    max-width: 100%;
+    max-height: 100%;                             /* Keeps images provided true to their shape for full photo */
+}
+
+.displaySlides {
+    display: block;
+}
+
+.aboutSlider p {
+    font-size: 18px;
+    margin-top: 10px;
+    text-transform: uppercase;          /* Image carousel label formatting */
+}
+
+.prev, .next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);          /* positioning, location, color of font, size and transparency of the background*/
+    color: whitesmoke;
+    border: none;
+    padding: 15px;
+}
+
+.prev {
+    left: 40.25%;                                  /* location of prev button */
+}
+
+.next {
+    right: 40.25%;                                /* location of next button */
+}
+
+
+.aboutMeInfo {
+    display: flex;
+    justify-content: space-around;                 /* Section sizing, formatting, and organization */
+    margin-top: 40px;
+}
+
+.infoSection {
+    width: 25%;
+    background-color: rgba(0, 0, 0, 0.6);                   /* Info section formatting, spacing, coloring, curvature, and font features*/
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.infoSection h2 {
+    font-size: 24px;
+    margin-bottom: 10px;         /* Header formatting for the about me information boxes, sizing, and location within the box*/
+}
+
+.infoSection p {
+    font-size: 20px;              /* Font size of the paragraphs in each box */
+}

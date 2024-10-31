@@ -1,0 +1,80 @@
+
+
+
+
+.sabrHeader {
+    font-family: 'Arial', sans-serif;
+    color: white;
+    background-image: url('../images/pressbox.webp');       /* Background and full web page sizing, formatting, and color*/
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh;
+}
+
+
+.introSABR {
+    text-align: center;                                /* aligns the text to center, and size of the intro area */
+    padding: 40px 0;
+}
+
+.introSABR h1 {
+    font-size: 60px;
+    margin-bottom: 20px;
+    text-transform: uppercase;                     /* Sizing and formatting of h1 header */
+    font-weight: bold;
+    color: grey;
+}
+
+.introSABR img {
+    max-width: 150px;
+    margin: 0 auto;                             /* SABR image on web page sizing and formatting */
+    display: block;
+}
+
+
+.sabrContent {
+    display: flex;
+    justify-content: space-around;
+    padding: 40px 0;                                 /* Each box for each section sizing, background color, and organization*/
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.formulasList {
+    text-align: left;
+    font-size: 18px;                       /* List of formulas sizing and organization */
+    padding: 10px;
+}
+
+.formulasList h3 {
+    margin-top: 20px;
+    text-transform: uppercase;                   /* Formulas labelling size and uppercase transformation*/
+    font-size: 20px;
+}
+
+.formulasList ul {
+    list-style-type: none;                    /* Gets rid of bullet points and aligns the list to the left*/
+    padding-left: 0;
+}
+.formulasList li {
+    margin-bottom: 10px;                     /* More organization of the list */
+}
+
+
+.contentBoxes {
+    text-align: center;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.2);     /* Transparent boxes with a different grey shade in between the whole bottom section, curvature, organization, and color*/
+    border-radius: 10px;
+    width: 30%;
+    color: yellow;
+}
+
+.contentBoxes h2 {
+    font-size: 24px;                /* Boxes header formatting */
+    margin-bottom: 10px;
+}
+
+.contentBoxes p {
+    font-size: 18px;               /* font size for each paragraph */
+}
+
