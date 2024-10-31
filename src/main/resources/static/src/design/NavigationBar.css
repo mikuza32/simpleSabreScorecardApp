@@ -1,0 +1,40 @@
+/* This is a css file to format and design the navigation bar */
+
+
+.navigationBar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;                    /* Center aligns the navigation bar and adds background color, size */
+    padding: 10px 20px;
+    background-color: #3E2723;
+}
+
+.webLinks {
+    list-style: none;
+    display: flex;                    /* Spacing in between navigation bar button */
+    gap: 30px;
+}
+
+.webLinks li a {
+    color: white;
+    text-decoration: none;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.webLinks li a:hover {
+    color: #FF9800;                    /* Dynamic color change to bright orange when user hovers over buttons*/
+}
+
+.callToAction {
+    background-color: #FF9800;
+    color: ghostwhite;
+    border: none;
+    border-radius: 8px;                       /* Creates curvature of button, button color, font size, button size, font color */
+    font-size: 20px;
+    padding: 12px 24px;
+}
+
+.callToAction:hover {
+    background-color: #e68900;        /* Dynamic color change to a darker orange when user hovers over CTA button */
+}
