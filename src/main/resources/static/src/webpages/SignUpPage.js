@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import '../design/SignUpPage.css'
+import axios from "axios";
 
 const SignUpPage = () => {
     const [username, setUsername] = useState('')
@@ -8,17 +9,24 @@ const SignUpPage = () => {
     const [confirmPassword, setConfirmPassword] = useState('')   //creates the username, password, and retype password objects
     const [error, setError] = useState('')    //error object for exception handling (I.E passwords don't match, field is not filled out)
     const navigation = useNavigate();          // navigation object and useNavigate function is created and ready to be used once Tools page is developed, this will redirect the user >
-                                                               // once the user successully makes an account
+    // once the user successully makes an account
 
-    const handleSubmition = (error) => {
+    const handleSubmition = async (error) => {
         error.preventDefault();             //if user does not create an account their Tools page won't load
 
         if (password !== confirmPassword) {
             setError('Inputted Passwords do NOT match.');       //if password and retyped password don't match user will be prompted to do so
-        } else {
-            setError('');
-            console.log('Sign Up Successful!', {username, password});   //signup successful prompt along with logging method to display successful message
-            navigation('/Tools')   //using the useNavigate method then redirects the user to their personal Tools page
+        }
+        try {
+            // posts the backend local host to perform sign up operations
+            // once the account is created the user is redirected to the tools page
+            await axios.post("http://localhost:8080/api/account/signup", {username, password});
+            setError("");
+            console.log("Login successful!");
+            navigation('/Tools');
+        } catch (error) {
+            // if unsuccessful creating an account the user is thrown an error
+            setError(error.response?.data?.message || "Creation of account unsuccessful please try again!")
         }
     };
 

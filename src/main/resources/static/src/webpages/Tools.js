@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import '../design/Tools.css'
 import axios from 'axios';
 
@@ -35,14 +35,37 @@ const Tools = () => {
         walkPercentage: '',
         strikeoutPercentage: '',
         fieldingPercentage: '',
-        opposingBattingAverage: '',
+        opposingBattingAverage: '',                  // added sabermetric lifetime properties and site wide averages to be fetched and displayed
         sluggingPercentage: '',
         onBasePlusSlugging: '',
         earnedRunAverage: '',
         earnedRunAveragePlus: '',
         walkHitsInningsPitched: '',
-        newEarnedRunAverage: ''
+        newEarnedRunAverage: '',
 
+        lifetimeBattingAverage: '',
+        lifetimeOnBasePercentage: '',
+        lifetimeSluggingPercentage: '',
+        lifetimeOPS: '',
+        lifetimeWalkPercentage: '',
+        lifetimeStrikeoutPercentage: '',
+        lifetimeFieldingPercentage: '',
+        lifetimeWHIP: '',
+        lifetimeERA: '',
+        lifetimeERAPlus: '',
+        lifetimeOpposingBattingAverage: '',
+
+        siteWideBattingAverage: '',
+        siteWideOnBasePercentage: '',
+        siteWideSluggingPercentage: '',
+        siteWideOPS: '',
+        siteWideWalkPercentage: '',
+        siteWideStrikeoutPercentage: '',
+        siteWideFieldingPercentage: '',
+        siteWideWHIP: '',
+        siteWideERA: '',
+        siteWideERAPlus: '',
+        siteWideOpposingBattingAverage: '',
     });
 
     const handleInput = (event) => {
@@ -54,112 +77,109 @@ const Tools = () => {
     };
 
     const handleOffensiveSubmit = async (event) => {
-        event.preventDefault();                  // Exception handling
+        event.preventDefault();
 
+        const {
+            hits,
+            atBats,
+            walks,
+            hitByPitch,
+            totalBases,         // counting statistic properties that are to be manipulated based on the users int entry for each
+            plateAppearances,
+            sacrificeFlies,
+            strikeouts,
+        } = toolsData;
 
-        const {hits, atBats, walks, hitByPitch, totalBases, plateAppearances, sacrificeFlies, strikeouts} = toolsData;
-
-              // try catch to run through all API calls to proceed with backend/frontend communications
-              // each offensive and defensive metric calculated sends a POST request using axios, seen below
         try {
 
-            const parsedHits = parseInt(hits) || 0;
-            const parsedAtBats = parseInt(atBats) || 0;
-            const parsedWalks = parseInt(walks) || 0;
-            const parsedHitByPitch = parseInt(hitByPitch) || 0;
-            const parsedSacrificeFlies = parseInt(sacrificeFlies) || 0;    // Sets the properties in the toolsData object to null until user entry, uses parseInt to turn the entry for the property into an int
-            const parsedTotalBases = parseInt(totalBases) || 0;
-            const parsedPlateAppearances = parseInt(plateAppearances) || 0;
-            const parsedStrikeouts = parseInt(strikeouts) || 0;
+            const userId = localStorage.getItem("userId");
+            if (!userId) {
+                alert("User ID not found. Please log in again.");      // ensures the userid created for user is valid before proceeding
+                return;
+            }
 
-            const battingAverageOutput = await axios.post('http://localhost:8080/api/offensiveSabermetrics/battingAverage', {
-                hits: parsedHits,
-                atBats: parsedAtBats,
-            });
-            const battingAverage = parseFloat(battingAverageOutput.data).toFixed(3);
 
-            const onBasePercentageOutput = await axios.post('http://localhost:8080/api/offensiveSabermetrics/onBasePercentage', {
-                hits: parsedHits,
-                atBats: parsedAtBats,
-                walks: parsedWalks,                                  // turns into integers, calls the respective functions for each parsed property
-                hitByPitch: parsedHitByPitch,
-                sacrificeFlies: parsedSacrificeFlies,
-            });
-            const onBasePercentage = parseFloat(onBasePercentageOutput.data).toFixed(3);
+            const parsedStats = {
+                hits: parseInt(hits) || 0,
+                atBats: parseInt(atBats) || 0,
+                walks: parseInt(walks) || 0,                  // parses all objects to make sure they are int, and are set to 0 if null
+                hitByPitch: parseInt(hitByPitch) || 0,
+                totalBases: parseInt(totalBases) || 0,
+                plateAppearances: parseInt(plateAppearances) || 0,
+                sacrificeFlies: parseInt(sacrificeFlies) || 0,
+                strikeouts: parseInt(strikeouts) || 0,
+            };
 
-            const walkPercentageOutput = await axios.post('http://localhost:8080/api/offensiveSabermetrics/walkPercentage', {
-                walks: parsedWalks,
-                plateAppearances: parsedPlateAppearances,
-            });
-            const walkPercentage = parseFloat(walkPercentageOutput.data).toFixed(3);
 
-            const strikeoutPercentageOutput = await axios.post('http://localhost:8080/api/offensiveSabermetrics/strikeoutPercentage', {
-                strikeouts: parsedStrikeouts,
-                plateAppearances: parsedPlateAppearances,
-            });
-            const strikeoutPercentage = parseFloat(strikeoutPercentageOutput.data).toFixed(3);
+            const response = await axios.post(
+                `http://localhost:8080/api/offensive/calculateOffensive/${userId}`,    //
+                parsedStats
+            );
 
-            const sluggingPercentageOutput = await axios.post('http://localhost:8080/api/offensiveSabermetrics/sluggingPercentage', {
-                totalBases: parsedTotalBases,
-                atBats: parsedAtBats,
-            });
-            const sluggingPercentage = parseFloat(sluggingPercentageOutput.data).toFixed(3);
 
-            const onBasePlusSluggingOutput = await axios.post('http://localhost:8080/api/offensiveSabermetrics/onBasePlusSlugging', {
-                onBasePercentage: parseFloat(onBasePercentage),                // parseFloat due to calculation using other sabermetrics that are being calculated
-                sluggingPercentage: parseFloat(sluggingPercentage)
-            });
-            const onBasePlusSlugging = parseFloat(onBasePlusSluggingOutput.data).toFixed(3);
+            const {
+                battingAverage,
+                onBasePercentage,
+                walkPercentage,
+                strikeoutPercentage,  //calculated sabermetric properties to be displayed after successful API call
+                sluggingPercentage,
+                onBasePlusSlugging,
+            } = response.data;
 
-            setToolsData({
-                ...toolsData,
-                battingAverage: battingAverage ?? 'N/A',
-                onBasePercentage: onBasePercentage ?? 'N/A',
-                walkPercentage: walkPercentage ?? 'N/A',                          //updates all of the offensive metric fields, ?? operator checks if each field is null or undefined
-                strikeoutPercentage: strikeoutPercentage ?? 'N/A',
-                sluggingPercentage: sluggingPercentage ?? 'N/A',
-                onBasePlusSlugging: onBasePlusSlugging ?? 'N/A',
-            });
+            setToolsData((prevState) => ({
+                ...prevState,
+                battingAverage: battingAverage?.toFixed(3) ?? "N/A",
+                onBasePercentage: onBasePercentage?.toFixed(3) ?? "N/A",
+                walkPercentage: walkPercentage?.toFixed(3) ?? "N/A",            //sets the properties to three decimal places, and initializes all
+                strikeoutPercentage: strikeoutPercentage?.toFixed(3) ?? "N/A",
+                sluggingPercentage: sluggingPercentage?.toFixed(3) ?? "N/A",
+                onBasePlusSlugging: onBasePlusSlugging?.toFixed(3) ?? "N/A",
+            }));
+
             alert("Your Offensive Metrics have been calculated successfully!");
+
+
+
         } catch (error) {
-            console.error("An error has occurred...", error.response || error);
-            alert("Cannot calculate Offensive Metrics, an error has occurred...");
+            console.error("An error occurred while calculating metrics:", error.response || error);
+            alert("Cannot calculate Offensive Metrics. Please try again.");
         }
     };
 
 
-     // Same as the handleOffensiveSubmit function, just doesn't initialize the parseInt for each property in its own function
+
+    // Same as the handleOffensiveSubmit function, just doesn't initialize the parseInt for each property in its own function
     const handleDefensiveSubmit = async (Event) => {
         Event.preventDefault();
         const { putouts, errors, assists, earnedRunsAllowed, hitsAllowed, walksAllowed, leagueAverageERA, defSacrifices, defSacrificeFlies, catchersInterference, inningsPitched, battersFaced } = toolsData;
         try {
-            const fieldingPercentageOutput = await axios.post('http://localhost:8080/api/defensiveSabermetrics/fieldingPercentage', {
+            const fieldingPercentageOutput = await axios.post('http://localhost:8080/api/defensive/calculateDefensive', {
                 putouts: parseInt(putouts),
                 assists: parseInt(assists),
                 errors: parseInt(errors)
             });
             const fieldingPercentage = fieldingPercentageOutput.data;
 
-            const earnedRunAverageOutput = await axios.post('http://localhost:8080/api/defensiveSabermetrics/earnedRunAverage', {
+            const earnedRunAverageOutput = await axios.post('http://localhost:8080/api/defensive/calculateDefensive', {
                 earnedRunsAllowed: parseInt(earnedRunsAllowed),
                 inningsPitched: parseInt(inningsPitched)
             });
             const earnedRunAverage = earnedRunAverageOutput.data;
 
-            const earnedRunAveragePlusOutput = await axios.post('http://localhost:8080/api/defensiveSabermetrics/earnedRunAveragePlus', {
+            const earnedRunAveragePlusOutput = await axios.post('http://localhost:8080/api/defensive/calculateDefensive', {
                 leagueAverageERA: parseInt(leagueAverageERA),
                 earnedRunAverage: parseFloat(earnedRunAverage)       // parseFloat is used since the already calculated era will be used for this metric
             });
             const earnedRunAveragePlus = earnedRunAveragePlusOutput.data;
 
-            const walkHitsInningsPitchedOutput = await axios.post('http://localhost:8080/api/defensiveSabermetrics/walkHitsInningsPitched', {
+            const walkHitsInningsPitchedOutput = await axios.post('http://localhost:8080/api/defensive/calculateDefensive', {
                 hitsAllowed: parseInt(hitsAllowed),
                 walksAllowed: parseInt(walksAllowed),
                 inningsPitched: parseInt(inningsPitched)
             });
             const walkHitsInningsPitched = walkHitsInningsPitchedOutput.data;
 
-            const opposingBattingAverageOutput = await axios.post('http://localhost:8080/api/defensiveSabermetrics/opposingBattingAverage', {
+            const opposingBattingAverageOutput = await axios.post('http://localhost:8080/api/defensive/calculateDefensive', {
                 hitsAllowed: parseInt(hitsAllowed),
                 walksAllowed: parseInt(walksAllowed),
                 battersFaced: parseInt(battersFaced),
@@ -178,12 +198,158 @@ const Tools = () => {
                 opposingBattingAverage: opposingBattingAverage ?? 'N/A'
             });
 
-            alert("Your Defensive Metrics have been calculated successfully!")
+            alert("Your Defensive Metrics have been calculated successfully!");
+
         } catch (e) {
             console.error("An error has occured...")                                     // catch exception for if an error occurs
             alert("Defensive Metrics cannot be calculated...")
         }
     };
+
+    const fetchMetrics = async () => {
+        try {
+            const userId = localStorage.getItem('userId');
+            if (!userId) {
+                throw new Error("User ID not found. Please log in again.");    // ensures the correct unique ID is attached to user before user can calculate anything
+            }
+
+            const [
+                lifetimeBattingAverage,
+                siteWideBattingAverage,
+                lifetimeOnBasePercentage,
+                siteWideOnBasePercentage,
+                lifetimeSluggingPercentage,
+                siteWideSluggingPercentage,
+                lifetimeOPS,
+                siteWideOPS,
+                lifetimeWalkPercentage,
+                siteWideWalkPercentage,                         //properties that are being manipulated and displayed from API calls
+                lifetimeStrikeoutPercentage,
+                siteWideStrikeoutPercentage,
+                lifetimeFieldingPercentage,
+                siteWideFieldingPercentage,
+                lifetimeWHIP,
+                siteWideWHIP,
+                lifetimeERA,
+                siteWideERA,
+                lifetimeERAPlus,
+                siteWideERAPlus,
+                lifetimeOpposingBattingAverage,
+                siteWideOpposingBattingAverage,
+            ] = await Promise.all([
+                axios.get(`http://localhost:8080/api/offensive/lifetime/batting-average/${userId}`),
+                axios.get(`http://localhost:8080/api/offensive/sitewide/batting-average`),
+                axios.get(`http://localhost:8080/api/offensive/lifetime/on-base-percentage/${userId}`),
+                axios.get(`http://localhost:8080/api/offensive/sitewide/on-base-percentage`),
+                axios.get(`http://localhost:8080/api/offensive/lifetime/slugging-percentage/${userId}`),
+                axios.get(`http://localhost:8080/api/offensive/sitewide/slugging-percentage`),
+                axios.get(`http://localhost:8080/api/offensive/lifetime/ops/${userId}`),
+                axios.get(`http://localhost:8080/api/offensive/sitewide/ops`),
+                axios.get(`http://localhost:8080/api/offensive/lifetime/walk-percentage/${userId}`),
+                axios.get(`http://localhost:8080/api/offensive/sitewide/walk-percentage`),                      //API calls for all the lifetime and site wide averages
+                axios.get(`http://localhost:8080/api/offensive/lifetime/strikeout-percentage/${userId}`),
+                axios.get(`http://localhost:8080/api/offensive/sitewide/strikeout-percentage`),
+                axios.get(`http://localhost:8080/api/defensive/lifetime/fielding-percentage/${userId}`),
+                axios.get(`http://localhost:8080/api/defensive/sitewide/fielding-percentage`),
+                axios.get(`http://localhost:8080/api/defensive/lifetime/whip/${userId}`),
+                axios.get(`http://localhost:8080/api/defensive/sitewide/whip`),
+                axios.get(`http://localhost:8080/api/defensive/lifetime/era/${userId}`),
+                axios.get(`http://localhost:8080/api/defensive/sitewide/era`),
+                axios.get(`http://localhost:8080/api/defensive/lifetime/era-plus/${userId}`),
+                axios.get(`http://localhost:8080/api/defensive/sitewide/era-plus`),
+                axios.get(`http://localhost:8080/api/defensive/lifetime/opposing-batting-average/${userId}`),
+                axios.get(`http://localhost:8080/api/defensive/sitewide/opposing-batting-average`),
+            ]);
+
+
+            console.log("Lifetime Batting Average Data:", lifetimeBattingAverage.data);      // logs the data in the console (used to ensure queries were successful and show correct data)
+            console.log("Site Wide Batting Average Data:", siteWideBattingAverage.data);
+
+            // ensures all data for averages are a valid integer for the respective calculations, if 0 print N/A
+            // all averages are capped to three decimal places for professionalism and accuracy
+            setToolsData({
+                ...toolsData,
+                lifetimeBattingAverage: isValidNumber(lifetimeBattingAverage.data)
+                    ? lifetimeBattingAverage.data.toFixed(3)
+                    : "N/A",
+                siteWideBattingAverage: isValidNumber(siteWideBattingAverage.data)
+                    ? siteWideBattingAverage.data.toFixed(3)
+                    : "N/A",
+                lifetimeOnBasePercentage: isValidNumber(lifetimeOnBasePercentage.data)
+                    ? lifetimeOnBasePercentage.data.toFixed(3)
+                    : "N/A",
+                siteWideOnBasePercentage: isValidNumber(siteWideOnBasePercentage.data)
+                    ? siteWideOnBasePercentage.data.toFixed(3)
+                    : "N/A",
+                lifetimeSluggingPercentage: isValidNumber(lifetimeSluggingPercentage.data)
+                    ? lifetimeSluggingPercentage.data.toFixed(3)
+                    : "N/A",
+                siteWideSluggingPercentage: isValidNumber(siteWideSluggingPercentage.data)
+                    ? siteWideSluggingPercentage.data.toFixed(3)
+                    : "N/A",
+                lifetimeOPS: isValidNumber(lifetimeOPS.data)
+                    ? lifetimeOPS.data.toFixed(3)                                  // ensures all data for averages are a valid integer for the respective calculations, if 0 print N/A
+                    : "N/A",
+                siteWideOPS: isValidNumber(siteWideOPS.data)
+                    ? siteWideOPS.data.toFixed(3)
+                    : "N/A",
+                lifetimeWalkPercentage: isValidNumber(lifetimeWalkPercentage.data)
+                    ? lifetimeWalkPercentage.data.toFixed(3)
+                    : "N/A",
+                siteWideWalkPercentage: isValidNumber(siteWideWalkPercentage.data)
+                    ? siteWideWalkPercentage.data.toFixed(3)
+                    : "N/A",
+                lifetimeStrikeoutPercentage: isValidNumber(lifetimeStrikeoutPercentage.data)
+                    ? lifetimeStrikeoutPercentage.data.toFixed(3)
+                    : "N/A",
+                siteWideStrikeoutPercentage: isValidNumber(siteWideStrikeoutPercentage.data)
+                    ? siteWideStrikeoutPercentage.data.toFixed(3)
+                    : "N/A",
+                lifetimeFieldingPercentage: isValidNumber(lifetimeFieldingPercentage.data)
+                    ? lifetimeFieldingPercentage.data.toFixed(3)
+                    : "N/A",
+                siteWideFieldingPercentage: isValidNumber(siteWideFieldingPercentage.data)
+                    ? siteWideFieldingPercentage.data.toFixed(3)
+                    : "N/A",
+                lifetimeWHIP: isValidNumber(lifetimeWHIP.data)
+                    ? lifetimeWHIP.data.toFixed(3)
+                    : "N/A",
+                siteWideWHIP: isValidNumber(siteWideWHIP.data)
+                    ? siteWideWHIP.data.toFixed(3)
+                    : "N/A",
+                lifetimeERA: isValidNumber(lifetimeERA.data)
+                    ? lifetimeERA.data.toFixed(2)
+                    : "N/A",
+                siteWideERA: isValidNumber(siteWideERA.data)
+                    ? siteWideERA.data.toFixed(2)
+                    : "N/A",
+                lifetimeERAPlus: isValidNumber(lifetimeERAPlus.data)
+                    ? lifetimeERAPlus.data.toFixed(2)
+                    : "N/A",
+                siteWideERAPlus: isValidNumber(siteWideERAPlus.data)
+                    ? siteWideERAPlus.data.toFixed(2)
+                    : "N/A",
+                lifetimeOpposingBattingAverage: isValidNumber(lifetimeOpposingBattingAverage.data)
+                    ? lifetimeOpposingBattingAverage.data.toFixed(3)
+                    : "N/A",
+                siteWideOpposingBattingAverage: isValidNumber(siteWideOpposingBattingAverage.data)
+                    ? siteWideOpposingBattingAverage.data.toFixed(3)
+                    : "N/A",
+            });
+
+        } catch (error) {
+            console.error("Error fetching metrics:", error);
+            alert("An error occurred while fetching metrics. Please try again.");
+        }
+    };
+
+// Helper function to check if a value is a valid number
+    const isValidNumber = (value) => !isNaN(parseFloat(value)) && isFinite(value);
+
+    useEffect(() => {
+        fetchMetrics();
+    }, []);
+
 
     const deleteSubmit = (fieldName) => {
         setToolsData({
@@ -287,21 +453,21 @@ const Tools = () => {
                 <section className='averagesContainer'>
                     <div className='userOffSabermetricAverages'>
                         <h2>Your Current Offensive Averages:</h2>
-                        <div className="calculations">Batting Average: {toolsData.battingAverage || 'N/A'}</div>
-                        <div className="calculations">On Base Percentage: {toolsData.onBasePercentage || 'N/A'}</div>
-                        <div className="calculations">Slugging Percentage: {toolsData.sluggingPercentage || 'N/A'}</div>                   {/* Calculations output is not applicable due to no backend*/}
-                        <div className="calculations">On Base Plus Slugging Percentage: {toolsData.onBasePlusSlugging || 'N/A'}</div>
-                        <div className="calculations">Walk Percentage: {toolsData.walkPercentage || 'N/A'}</div>
-                        <div className="calculations">Strikeout Percentage: {toolsData.strikeoutPercentage || 'N/A'}</div>
+                        <div className="calculations">Batting Average: {toolsData.lifetimeBattingAverage || 'N/A'}</div>
+                        <div className="calculations">On Base Percentage: {toolsData.lifetimeOnBasePercentage || 'N/A'}</div>
+                        <div className="calculations">Slugging Percentage: {toolsData.lifetimeSluggingPercentage || 'N/A'}</div>                   {/* Calculations output is not applicable due to no backend*/}
+                        <div className="calculations">On Base Plus Slugging Percentage: {toolsData.lifetimeOPS || 'N/A'}</div>
+                        <div className="calculations">Walk Percentage: {toolsData.lifetimeWalkPercentage || 'N/A'}</div>
+                        <div className="calculations">Strikeout Percentage: {toolsData.lifetimeStrikeoutPercentage || 'N/A'}</div>
                     </div>                                                                       {/* Placeholder section that calls the calculations for averages, for now is set as N/A due to no backend*/}
                     <div className='siteOffSabermetricAverages'>
                         <h2>Current Site Offensive Averages:</h2>
-                        <div className="calculations">Batting Average: {'N/A'}</div>
-                        <div className="calculations">On Base Percentage: {'N/A'}</div>
-                        <div className="calculations">Slugging Percentage: {'N/A'}</div>                      {/* Calculations output is not applicable due to no backend*/}
-                        <div className="calculations">On Base Plus Slugging Percentage: {'N/A'}</div>
-                        <div className="calculations">Walk Percentage: {'N/A'}</div>
-                        <div className="calculations">Strikeout Percentage: {'N/A'}</div>
+                        <div className="calculations">Batting Average: {toolsData.siteWideBattingAverage}</div>
+                        <div className="calculations">On Base Percentage: {toolsData.siteWideOnBasePercentage}</div>
+                        <div className="calculations">Slugging Percentage: {toolsData.siteWideSluggingPercentage}</div>                      {/* Calculations output is not applicable due to no backend*/}
+                        <div className="calculations">On Base Plus Slugging Percentage: {toolsData.siteWideOPS}</div>
+                        <div className="calculations">Walk Percentage: {toolsData.siteWideWalkPercentage}</div>
+                        <div className="calculations">Strikeout Percentage: {toolsData.siteWideStrikeoutPercentage}</div>
                     </div>
                 </section>
             </div>
@@ -421,19 +587,19 @@ const Tools = () => {
                 <section className='averagesContainer'>
                     <div className='userDefSabermetricAverages'>
                         <h2>Your Current Defensive Averages:</h2>
-                        <div className="calculations">Fielding Percentage: {toolsData.fieldingPercentage || 'N/A'}</div>
-                        <div className="calculations">Earned Run Average: {toolsData.earnedRunAverage || 'N/A'}</div>
-                        <div className="calculations">Earned Run Average Plus: {toolsData.earnedRunAveragePlus || 'N/A'}</div>              {/* Calculations output is not applicable due to no backend*/}
-                        <div className="calculations">Walk/Hits Per Innings Pitched: {toolsData.walkHitsInningsPitched || 'N/A'}</div>
-                        <div className="calculations">Opposing Batting Average: {toolsData.opposingBattingAverage || 'N/A'}</div>
+                        <div className="calculations">Fielding Percentage: {toolsData.lifetimeFieldingPercentage || 'N/A'}</div>
+                        <div className="calculations">Earned Run Average: {toolsData.lifetimeERA || 'N/A'}</div>
+                        <div className="calculations">Earned Run Average Plus: {toolsData.lifetimeERAPlus || 'N/A'}</div>              {/* Calculations output is not applicable due to no backend*/}
+                        <div className="calculations">Walk/Hits Per Innings Pitched: {toolsData.lifetimeWHIP || 'N/A'}</div>
+                        <div className="calculations">Opposing Batting Average: {toolsData.lifetimeOpposingBattingAverage || 'N/A'}</div>
                     </div>                                                                 {/* Placeholder section that calls the calculations for averages, for now is set as N/A due to no backend*/}
                     <div className='siteDefSabermetricAverages'>
                         <h2>Current Site Defensive Averages:</h2>
-                        <div className="calculations">Fielding Percentage: {'N/A'}</div>
-                        <div className="calculations">Earned Run Average: {'N/A'}</div>
-                        <div className="calculations">Earned Run Average Plus: {'N/A'}</div>
-                        <div className="calculations">Walk/Hits Per Innings Pitched: {'N/A'}</div>         {/* Calculations output is not applicable due to no backend*/}
-                        <div className="calculations">Opposing Batting Average: {'N/A'}</div>
+                        <div className="calculations">Fielding Percentage: {toolsData.siteWideFieldingPercentage}</div>
+                        <div className="calculations">Earned Run Average: {toolsData.siteWideERA}</div>
+                        <div className="calculations">Earned Run Average Plus: {toolsData.siteWideERAPlus}</div>
+                        <div className="calculations">Walk/Hits Per Innings Pitched: {toolsData.siteWideWHIP}</div>         {/* Calculations output is not applicable due to no backend*/}
+                        <div className="calculations">Opposing Batting Average: {toolsData.siteWideOpposingBattingAverage}</div>
                     </div>
                 </section>
             </div>

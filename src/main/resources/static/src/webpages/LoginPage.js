@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import {useNavigate} from "react-router-dom";
+import axios from "axios";
 import '../design/LoginPage.css'
 
 const LoginPage = () => {
@@ -8,17 +9,25 @@ const LoginPage = () => {
     const [error, setError] = useState('')               // error object is created to display for exception handling
     const navigation = useNavigate();                     // useNavigate function to redirect user to custom Tools page once sucessfully logged in
 
-    const handleSubmition = (error) => {
+    const handleSubmition = async (error) => {
         error.preventDefault()                        // if user does not successfully login the tools page will not load
 
         if (!username || !password) {
             setError('Enter in both fields to Login!');             // If user does not sucessfully enter into both fields
-        } else {
-            setError('')
-            console.log("Login successful!")                             // Success prompt displayed to user then redirected to tools page
-            navigation('/Tools')
         }
-    }
+        try {
+            // posts the backend local host to perform login operations
+            // once logged in the user is given the unique id and redirected to the tools page
+            const response = await axios.post('http://localhost:8080/api/account/login', {username, password});
+            localStorage.setItem('userId', response.data.userId);
+            setError('');
+            console.log("Logged in successfully!")
+            navigation('/Tools');
+        } catch (error) {
+            // if unsuccessful the user is thrown an error and user has to log in again
+            setError(error.response?.data?.message || "Login unsuccessful please try again!");
+        }
+    };
     return (
         <div className='loginBox'>
             <h1>Welcome Back!</h1>                             {/*Welcoming header for when the user loads the login webpage*/}

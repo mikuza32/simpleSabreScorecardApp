@@ -1,5 +1,6 @@
 package com.github.mikuza32.simplesabrescorecardapp.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
@@ -14,9 +15,9 @@ public class defensiveSabermetrics {
     @Column(name = "fielding_percentage")
     private double fieldingPercentage;
 
-    @Column(name = "walks_hits_innings_pitched")
+    @Column(name = "walk_hits_innings_pitched")
     private double walkHitsInningsPitched;
-
+                                                                       // offensiveSabermetrics entity created with respective table and columns within the table
     @Column(name = "opposing_batting_average")
     private double opposingBattingAverage;
 
@@ -25,8 +26,9 @@ public class defensiveSabermetrics {
 
     @Column(name = "earned_run_average_plus")
     private double earnedRunAveragePlus;
-    @ManyToOne
+    @ManyToOne                                                                 // connects users to their unique sabermetrics as many users have their own calculations
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnore
     private Users users;
 
     @Column(name = "created_at", nullable = false)
@@ -55,7 +57,7 @@ public class defensiveSabermetrics {
 
     public void setEarnedRunAverage(double earnedRunAverage) {
         this.earnedRunAverage = earnedRunAverage;
-    }
+    }                                                                                                               // setters and getters for each column
 
     public double getEarnedRunAveragePlus() {
         return earnedRunAveragePlus;
@@ -83,7 +85,7 @@ public class defensiveSabermetrics {
 
     public defensiveSabermetrics() {
         this.createdAt = LocalDateTime.now();
-    }
+    }                                     //sets the timestamp to the exact date and time the user last calculated their offensive sabermetrics
 
     public Users getUsers() {
         return users;

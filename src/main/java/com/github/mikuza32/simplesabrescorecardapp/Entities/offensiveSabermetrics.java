@@ -1,4 +1,5 @@
 package com.github.mikuza32.simplesabrescorecardapp.Entities;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -31,6 +32,7 @@ public class offensiveSabermetrics {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnore
     private Users users;                                           // connects users to their unique sabermetrics as many users have their own calculations
 
     @Column(name = "created_at", nullable = false, updatable = false)
@@ -106,6 +108,8 @@ public class offensiveSabermetrics {
     public offensiveSabermetrics() {
         this.createdAt = LocalDateTime.now();      //sets the timestamp to the exact date and time the user last calculated their offensive sabermetrics
     }
+
+
 }
 
 

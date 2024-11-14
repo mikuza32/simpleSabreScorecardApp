@@ -1,5 +1,6 @@
 package com.github.mikuza32.simplesabrescorecardapp.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -20,13 +21,16 @@ public class Users {
     private String password;
 
     @OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<offensiveSabermetrics> offensiveSabermetrics;
 
-    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL)        // usage of @JsonIgnore annotation to ensure application can calculate sabermetrics with one to many cardinality
+                                                                     // and ignore the logical property used in serialization and deserialization
+    @JsonIgnore
     private List<defensiveSabermetrics> defensiveSabermetrics;
 
     public Users() {
-        // called in the offensiveSabermetric, defensive, and counting statistic classes
+
     }
 
     public Long getId() {
