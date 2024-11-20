@@ -76,7 +76,7 @@ const Tools = () => {
         });
     };
 
-    const handleOffensiveSubmit = async (event) => {
+    const handleOffensiveSabermetrics = async (event) => {
         event.preventDefault();
 
         const {
@@ -142,67 +142,76 @@ const Tools = () => {
 
         } catch (error) {
             console.error("An error occurred while calculating metrics:", error.response || error);
-            alert("Cannot calculate Offensive Metrics. Please try again.");
+            alert("Cannot calculate offensive metrics.");
         }
     };
 
 
 
-    // Same as the handleOffensiveSubmit function, just doesn't initialize the parseInt for each property in its own function
-    const handleDefensiveSubmit = async (Event) => {
+
+    const handleDefensiveSabermetrics = async (Event) => {
         Event.preventDefault();
-        const { putouts, errors, assists, earnedRunsAllowed, hitsAllowed, walksAllowed, leagueAverageERA, defSacrifices, defSacrificeFlies, catchersInterference, inningsPitched, battersFaced } = toolsData;
+        const {
+            putouts,
+            assists,
+            errors,
+            earnedeRunsAllowed,
+            hitsAllowed,
+            walksAllowed,
+            leagueAverageERA,
+            defSacrifices,
+            defSacrificeFlies,
+            catchersInterference,
+            inningsPitched,
+            battersFaced,
+        } = toolsData;
+
         try {
-            const fieldingPercentageOutput = await axios.post('http://localhost:8080/api/defensive/calculateDefensive', {
-                putouts: parseInt(putouts),
-                assists: parseInt(assists),
-                errors: parseInt(errors)
-            });
-            const fieldingPercentage = fieldingPercentageOutput.data;
+            const userId = localStorage.getItem("userId");
+            if (!userId) {
+                alert("User ID not found. Please log in again.");      // ensures the userid created for user is valid before proceeding
+                return;
+            }
+            const parsedStats = {
+                putouts: parseInt(putouts) || 0,
+                assists: parseInt(assists) || 0,
+                errors: parseInt(errors) || 0,                  // parses all objects to make sure they are int, and are set to 0 if null
+                earnedRunsAllowed: parseInt(earnedeRunsAllowed) || 0,
+                hitsAllowed: parseInt(hitsAllowed) || 0,
+                walksAllowed: parseInt(walksAllowed) || 0,
+                leagueAverageERA: parseInt(leagueAverageERA) || 0,
+                catchersInterference: parseInt(catchersInterference) || 0,
+                defSacrifices: parseInt(defSacrifices) || 0,
+                defSacrificeFlies: parseInt(defSacrificeFlies) || 0,
+                inningsPitched: parseInt(inningsPitched) || 0,
+                battersFaced: parseInt(battersFaced) || 0,
+            };
+            const response = await axios.post(
+                `http://localhost:8080/api/defensive/calculateDefensive/${userId}`,
+                parsedStats
+            );
 
-            const earnedRunAverageOutput = await axios.post('http://localhost:8080/api/defensive/calculateDefensive', {
-                earnedRunsAllowed: parseInt(earnedRunsAllowed),
-                inningsPitched: parseInt(inningsPitched)
-            });
-            const earnedRunAverage = earnedRunAverageOutput.data;
+            const {
+                earnedRunAverage,
+                earnedRunAveragePlus,
+                walkHitsInningsPitched,
+                fieldingPercentage,
+                opposingBattingAverage,
+            } = response.data;
 
-            const earnedRunAveragePlusOutput = await axios.post('http://localhost:8080/api/defensive/calculateDefensive', {
-                leagueAverageERA: parseInt(leagueAverageERA),
-                earnedRunAverage: parseFloat(earnedRunAverage)       // parseFloat is used since the already calculated era will be used for this metric
-            });
-            const earnedRunAveragePlus = earnedRunAveragePlusOutput.data;
+            setToolsData((prevState) => ({
+                ...prevState,
+                earnedRunAverage: earnedRunAverage?.toFixed(2) ?? "N/A",
+                earnedRunAveragePlus: earnedRunAveragePlus?.toFixed(2) ?? "N/A",
+                walkHitsInningsPitched: walkHitsInningsPitched?.toFixed(3) ?? "N/A",
+                opposingBattingAverage: opposingBattingAverage?.toFixed(3) ?? "N/A",
+                fieldingPercentage: fieldingPercentage?.toFixed(3) ?? "N/A",
+            }));
 
-            const walkHitsInningsPitchedOutput = await axios.post('http://localhost:8080/api/defensive/calculateDefensive', {
-                hitsAllowed: parseInt(hitsAllowed),
-                walksAllowed: parseInt(walksAllowed),
-                inningsPitched: parseInt(inningsPitched)
-            });
-            const walkHitsInningsPitched = walkHitsInningsPitchedOutput.data;
-
-            const opposingBattingAverageOutput = await axios.post('http://localhost:8080/api/defensive/calculateDefensive', {
-                hitsAllowed: parseInt(hitsAllowed),
-                walksAllowed: parseInt(walksAllowed),
-                battersFaced: parseInt(battersFaced),
-                defSacrificeFlies: parseInt(defSacrificeFlies),
-                defSacrifices: parseInt(defSacrifices),
-                catchersInterference: parseInt(catchersInterference)
-            });
-            const opposingBattingAverage = opposingBattingAverageOutput.data;
-
-            setToolsData({
-                ...toolsData,
-                fieldingPercentage: fieldingPercentage ?? 'N/A',
-                earnedRunAverage: earnedRunAverage ?? 'N/A',
-                earnedRunAveragePlus: earnedRunAveragePlus ?? 'N/A',                 //updates all of the defensive metric fields, ?? operator checks if each field is null or undefined
-                walkHitsInningsPitched: walkHitsInningsPitched ?? 'N/A',
-                opposingBattingAverage: opposingBattingAverage ?? 'N/A'
-            });
-
-            alert("Your Defensive Metrics have been calculated successfully!");
-
-        } catch (e) {
-            console.error("An error has occured...")                                     // catch exception for if an error occurs
-            alert("Defensive Metrics cannot be calculated...")
+            alert("Your defensive metrics have been calculated successfully!");
+        } catch (error) {
+            console.error("An error occured while calculating metrics:", error.response || error);
+            alert("Cannot calculate defensive metrics because an error has occured.");
         }
     };
 
@@ -339,7 +348,7 @@ const Tools = () => {
 
         } catch (error) {
             console.error("Error fetching metrics:", error);
-            alert("An error occurred while fetching metrics. Please try again.");
+            alert("An error occurred while fetching metrics.");
         }
     };
 
@@ -367,7 +376,7 @@ const Tools = () => {
             <div className='metricsSection'>
                 <section className='offensiveMetrics'>
                     <h2> Your Offensive Metrics </h2>
-                    <form onSubmit={handleOffensiveSubmit}>           {/* Form calls the handleSubmit function */}
+                    <form onSubmit={handleOffensiveSabermetrics}>           {/* Form calls the handleSubmit function */}
                         <label>Total Hits (H):</label>
                         <input
                             type="number"
@@ -474,7 +483,7 @@ const Tools = () => {
             <div className='metricsSection'>
                 <section className="defensiveMetrics">
                     <h2>Your Defensive Metrics</h2>
-                    <form onSubmit={handleDefensiveSubmit}>
+                    <form onSubmit={handleDefensiveSabermetrics}>
                         <label>Total Putouts:</label>
                         <input
                             type="number"
