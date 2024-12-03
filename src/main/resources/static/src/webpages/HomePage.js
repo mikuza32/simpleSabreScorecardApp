@@ -94,8 +94,15 @@ const HomePage = () => {
                     <button className="homeNext" onClick={nextSlide}>&#10095;</button>                                {/*This div is for the middle section in which will display the image carousel as well as tut video*/}
                 </div>
                 <div className="videoTutorial">
-                    <p>Tutorial: </p>
-                    <img src="fake%20video.jpg" alt="Video"/>
+                    <p>Welcome Tutorial: </p>
+                    <iframe
+                        width="300"
+                        height="200"
+                        src="https://www.youtube.com/embed/HN0TOO1FhHM"
+                        title="Website Tutorial"
+                        allow="accelerometer: autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                    ></iframe>
                 </div>
             </div>
             <div className="userContent">
