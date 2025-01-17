@@ -30,16 +30,24 @@ was built with modern web technologies, has user-friendly interfaces, and persis
     - Opponent Batting Average (OBA)
  
 ***TECHNOLOGIES USED***
+
 *Front-end*
+
   - React Framework: Used to create dynamic user interface
   - JavaScript: Interactivity with applications UI
   - HTML/CSS: Structure and styling of the application
+    
 *Back-end*
+
   - Spring Boot: Creation of RESTful APIs and back-end layers
   - Java: For back-end functionality and logic
+    
 *Database*
+
   - MySQL:  Relational persistent storage of authorized user data and sabermetrics
+    
 *Tools and Libraries*
+
   - Axios: Handling API requests and responses
   - Hibernate (JPA): Object-relational mapping and database interactivity
   - Spring Data JPA: Simple database operations
