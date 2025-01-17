@@ -1,4 +1,5 @@
-*Simple Sabermetrics Scorecard Application*
+***Simple Sabermetrics Scorecard Application***
+
 Hello everyone! This is my simpleSabreScorecard web application project that I completed in CEN-4350C (Open Source Web Technologies) 
 while pursuing my B.A.S in Computing Technologies and Software Development at Valencia College. This project was developed to help 
 baseball players, coaches, fans, or analysts of the game create qualitative analysis based on quantitative results. Although, the
@@ -11,18 +12,23 @@ was built with modern web technologies, has user-friendly interfaces, and persis
 - User session and lifetime offensive and defensive sabermetrics aree calculated accurately
 - Site-wide lifetime sabermetrics are calculated based on all authorized user entry
 - Metrics calculated include:
+
   *Offensive Simple Sabermetrics*
+  
     - Batting Average (AVG)
     - On-Base Percentage (OBP)
     - On-Base Plus Slugging (OPS)
     - Walk Percentage (BB%)
     - Strikeout Percentage (K%)
+ 
   *Defensive Simple Sabermetrics*
+
     - Fielding Percentage (FPCT)
     - Walks + Hits per Innings Pitched (WHIP)
     - Earned Run Average (ERA)
     - Earned Run Average Plus (ERA+)
     - Opponent Batting Average (OBA)
+ 
 ***TECHNOLOGIES USED***
 *Front-end*
   - React Framework: Used to create dynamic user interface
